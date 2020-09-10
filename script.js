@@ -49,64 +49,18 @@ let display = (num) => {
     output.textContent = displayValue;
 }
 
-for (const numKey of numKeys) {
-    numKey.addEventListener("click", function() {
-        display(numKey.textContent);
-    })
+let clear = () => {
+    firstNum = "";
+    displayValue = "";
+    output.textContent = "0";
 }
 
-backspaceKey.addEventListener("click", function () {
+let backspace = () => {
     displayValue = displayValue.slice(0, -1)
     output.textContent = displayValue;
-})
-
-dotKey.addEventListener("click", function () {
-    if (!displayValue.includes(".")) {
-        display(".");
-    }
-});
-
-let operatorKey = (operateSign) => {
-    firstNum = displayValue;
-    displayValue = "";
-    output.textContent = operateSign;
-    operateValue = operateSign;
 }
 
-multiplyKey.addEventListener("click", function () {
-    if (parseInt(firstNum) > 0) {
-        firstNum = operate(operateValue, firstNum, displayValue);
-        displayValue = ""
-        output.textContent = firstNum;
-        operateValue = "*";
-    } else {
-        operatorKey("*");
-    }
-});
-
-plusKey.addEventListener("click", function () {
-    if (parseInt(firstNum) > 0) {
-        firstNum = operate(operateValue, firstNum, displayValue);
-        displayValue = ""
-        output.textContent = firstNum;
-        operateValue = "+";
-    } else {
-        operatorKey("+");
-    }
-});
-
-minusKey.addEventListener("click", function () {
-    if (parseInt(firstNum) > 0) {
-        firstNum = operate(operateValue, firstNum, displayValue);
-        displayValue = ""
-        output.textContent = firstNum;
-        operateValue = "-";
-    } else {
-        operatorKey("-");
-    }
-});
-
-divideKey.addEventListener("click", function () {
+let divider = () => {
     if (parseInt(firstNum) > 0) {
         firstNum = operate(operateValue, firstNum, displayValue);
         displayValue = ""
@@ -115,17 +69,105 @@ divideKey.addEventListener("click", function () {
     } else {
         operatorKey("/");
     }
-});
+}
 
-equalKey.addEventListener("click", function () {
+let multiplier = () => {
+    if (parseInt(firstNum) > 0) {
+        firstNum = operate(operateValue, firstNum, displayValue);
+        displayValue = ""
+        output.textContent = firstNum;
+        operateValue = "*";
+    } else {
+        operatorKey("*");
+    }    
+}
+
+let decimaler = () => {
+    if (!displayValue.includes(".")) {
+        display(".");
+    }
+}
+
+let additioner = () => {
+    if (parseInt(firstNum) > 0) {
+        firstNum = operate(operateValue, firstNum, displayValue);
+        displayValue = ""
+        output.textContent = firstNum;
+        operateValue = "+";
+    } else {
+        operatorKey("+");
+    }
+}
+
+let subsctracter = () => {
+    if (parseInt(firstNum) > 0) {
+        firstNum = operate(operateValue, firstNum, displayValue);
+        displayValue = ""
+        output.textContent = firstNum;
+        operateValue = "-";
+    } else {
+        operatorKey("-");
+    }
+}
+
+let equalizer = () => {
     if (isNaN(parseInt(firstNum)) || isNaN(parseInt(displayValue))) {
     } else {
         output.textContent = operate(operateValue, firstNum, displayValue);
     }
-})
+}
 
-clearKey.addEventListener("click", function () {
-    firstNum = "";
+for (const numKey of numKeys) {
+    numKey.addEventListener("click", function() {
+        display(numKey.textContent);
+    })
+}
+
+backspaceKey.addEventListener("click", backspace)
+
+dotKey.addEventListener("click", decimaler);
+
+let operatorKey = (operateSign) => {
+    firstNum = displayValue;
     displayValue = "";
-    output.textContent = "0";
-})
+    output.textContent = operateSign;
+    operateValue = operateSign;
+}
+
+multiplyKey.addEventListener("click", multiplier);
+
+plusKey.addEventListener("click", additioner);
+
+minusKey.addEventListener("click", subsctracter);
+
+divideKey.addEventListener("click", divider);
+
+equalKey.addEventListener("click", equalizer)
+
+clearKey.addEventListener("click", clear)
+
+window.addEventListener("keydown", keyDown);
+
+function keyDown(e) {
+    const key = document.querySelector(`button[data-key="${e.keyCode}"]`);
+    if (key.id === "clear") {
+        clear();
+    } else if (key.id === "backspace") {
+        backspace();
+    } else if (key.id === "divide") {
+        e.preventDefault();
+        divider();
+    } else if (key.id === "multiply") {
+        multiplier();
+    } else if (key.id === "minus") {
+        subsctracter();
+    } else if (key.id === "plus") {
+        additioner();
+    } else if (key.id === "equal") {
+        equalizer();
+    } else if (key.id === "dot") {
+        decilmaler();
+    } else {
+        display(key.textContent)
+    }
+}
