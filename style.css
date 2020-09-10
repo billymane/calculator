@@ -101,3 +101,7 @@ button {
 .clear:active {
     background-color: rgb(123, 189, 255);
 }
+
+#backspace:active {
+    background-color: rgb(123, 189, 255);
+}
